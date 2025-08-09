@@ -2,8 +2,6 @@ extends CharacterBody2D
 
 
 @export var speed : float = 200.0
-@export var jump_velocity : float = -300.0
-@export var double_jump_velocity : float = -300
 
 @onready var sprite : Sprite2D = $Sprite2D
 @onready var animation_tree : AnimationTree = $AnimationTree
@@ -29,15 +27,7 @@ func _physics_process(delta: float):
 			
 		was_in_air = false
 		
-		
-	if Input.is_action_just_pressed("jump"):
-		if is_on_floor():
-			jump()
-		elif not has_double_jumped:
-			double_jump()
-
-
-	direction = Input.get_vector("left", "right", "up", "down")
+	direction = Input.get_vector("left", "right", "jump", "down")
 	
 	if direction.x != 0 && state_machine.check_if_can_move():
 		velocity.x = direction.x * speed
@@ -58,16 +48,6 @@ func update_facing_direction():
 	elif direction.x < 0:
 		sprite.flip_h = true
 
-func jump():
-	velocity.y = jump_velocity
-	# animated_sprite.play("jump_start")
-	animation_locked = true
-
-func double_jump():
-	velocity.y = double_jump_velocity
-	# animated_sprite.play("jump_double")
-	animation_locked = true
-	has_double_jumped = true
 
 func land():
 	# animated_sprite.play("jump_end")
